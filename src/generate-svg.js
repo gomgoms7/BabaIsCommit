@@ -3,7 +3,7 @@ const path = require('path');
 
 function getBase64Image(fileName) {
   try {
-    const filePath = path.join(__dirname, '..', 'assets', fileName);
+    const filePath = path.resolve(__dirname, '..', 'assets', fileName);
     const base64 = fs.readFileSync(filePath, { encoding: 'base64' });
     const ext = path.extname(fileName).toLowerCase();
     const mime = (ext === '.jpg' || ext === '.jpeg') ? 'jpeg' : 'png';

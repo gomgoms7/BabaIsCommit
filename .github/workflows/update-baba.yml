@@ -1,0 +1,50 @@
+name: Update Baba Is Commit
+
+on:
+  schedule:
+    - cron: "0 0 * * *" 
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          
+      - name: package installation
+        run: npm install
+        
+      - name: baba SVG generation
+        env:
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} # 내 잔디를 읽어올 비밀 토큰
+        run: |
+          npm run build
+          node dist/index.js
+          
+      - name: Commit and push SVG to 'baba-output' branch
+        run: |
+          
+          mkdir -p output_images
+          mv dist/baba-is-commit.svg output_images/
+          
+          cd output_images
+          git init
+          git checkout -b baba-output
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add baba-is-commit.svg
+          git commit -m "baba is commit - update SVG for ${{ github.repository_owner }} at $(date +'%Y-%m-%d %H:%M:%S')"
+          
+          git push --force "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" baba-output

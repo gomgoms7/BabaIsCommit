@@ -34,18 +34,18 @@ jobs:
           
       - name: Commit and push SVG to 'baba-output' branch
         run: |
-          
-          mkdir -p output_images
-          mv dist/baba-is-commit.svg output_images/
-          
-          cd output_images
-          git init
-          git checkout -b baba-output
-          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
+          # Create a new directory for the output SVG
+          mkdir -p output
+          mv baba-is-commit.svg output/
+          cd output
+
+          # Commit to the baba-output branch
+          git init
+          git checkout -b baba-output
           git add baba-is-commit.svg
-          git commit -m "baba is commit - update SVG for ${{ github.repository_owner }} at $(date +'%Y-%m-%d %H:%M:%S')"
+          git commit -m "BABA IS COMMIT - Update SVG"
           
           git push --force "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" baba-output

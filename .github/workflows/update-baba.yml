@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write 
-
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,7 +19,7 @@ jobs:
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24'
           
       - name: package installation
         run: npm install
@@ -26,7 +27,7 @@ jobs:
       - name: baba SVG generation
         env:
           GITHUB_USERNAME: ${{ github.repository_owner }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} # 내 잔디를 읽어올 비밀 토큰
         run: |
           npm run build
           node dist/index.js
@@ -35,7 +36,7 @@ jobs:
         run: |
           
           mkdir -p output_images
-          mv baba-is-commit.svg output_images/
+          mv dist/baba-is-commit.svg output_images/
           
           cd output_images
           git init

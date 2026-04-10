@@ -1,2 +1,2 @@
 # BabaIsCommit
-creating a feature that applies SVG animations to a profile using Babaisyou characters and GitHub Actions.
+creating a feature that applies SVG animations to a profile using Babaisyou characters and GitHub Actions. ㅁㄴㅇ

@@ -1,0 +1,27 @@
+{
+  "name": "babaiscommit",
+  "version": "1.0.0",
+  "description": "creating a feature that applies SVG animations to a profile using Babaisyou characters and GitHub Actions.",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build src/index.js -o dist --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gomgoms7/BabaIsCommit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gomgoms7/BabaIsCommit/issues"
+  },
+  "homepage": "https://github.com/gomgoms7/BabaIsCommit#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.4"
+  }
+}

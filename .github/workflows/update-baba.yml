@@ -35,7 +35,7 @@ jobs:
         run: |
           
           mkdir -p output_images
-          mv dist/baba-is-commit.svg output_images/
+          mv baba-is-commit.svg output_images/
           
           cd output_images
           git init

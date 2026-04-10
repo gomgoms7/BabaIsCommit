@@ -21,9 +21,7 @@ async function getContributions(userName, token) {
       }
     }
   `;
-
-  // 쿼리 실행 및 데이터 반환
-  console.log(`[BabaIsCommit] ${userName}님의 깃허브 잔디 데이터를 불러오는 중...`);
+  console.log(`[BabaIsCommit] ${userName}'S GITHUB LOADING...`);
   const response = await octokit.graphql(query, { userName });
   
   return response.user.contributionsCollection.contributionCalendar;

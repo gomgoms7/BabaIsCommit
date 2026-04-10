@@ -42,6 +42,14 @@ const ASSETS = {
 
 const LEVEL_COLORS = ['#E3E3E3', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
+const LEVEL_MAP = {
+  'NONE': 0,
+  'FIRST_QUARTILE': 1,
+  'SECOND_QUARTILE': 2,
+  'THIRD_QUARTILE': 3,
+  'FOURTH_QUARTILE': 4
+};
+
 function generateSvg(calendarData) {
   const width = 800; 
   const height = 450; 
@@ -167,19 +175,29 @@ function generateSvg(calendarData) {
   function makePopKF(name, baseLevel) {
     let kf = `@keyframes ${name} { `;
     let curLvl = baseLevel;
+    
     kf += `0% { fill: ${LEVEL_COLORS[curLvl]}; transform: scale(1); } `;
-    for(let i=0; i<pops.length; i++) {
-      let popStep = pops[i];
-      let nextLvl = Math.min(4, curLvl + 1);
-      let startPct = ((popStep - 1 + 0.6) / STEPS) * 100; 
-      let settlePct = startPct + 3; 
-      if(nextLvl !== curLvl) {
-        kf += `${startPct - 0.1}% { fill: ${LEVEL_COLORS[curLvl]}; transform: scale(1); } `;
-        kf += `${startPct}% { fill: ${LEVEL_COLORS[nextLvl]}; transform: scale(1.4); } `;
-        kf += `${settlePct}% { fill: ${LEVEL_COLORS[nextLvl]}; transform: scale(1); } `;
-        curLvl = nextLvl;
+
+    for(let i = 0; i < pops.length; i++) {
+      const popStep = pops[i];
+      
+      // i (블럭 푸시 순서)가 baseLevel (잔디의 초기 레벨)보다 크거나 같을 때만 레벨업을 시작합니다.
+      if (i >= baseLevel) {
+        const nextLvl = Math.min(4, curLvl + 1);
+        
+        if (nextLvl !== curLvl) {
+          const startPct = ((popStep - 1 + 0.6) / STEPS) * 100; 
+          const settlePct = startPct + 3; 
+
+          kf += `${startPct - 0.1}% { fill: ${LEVEL_COLORS[curLvl]}; transform: scale(1); } `;
+          kf += `${startPct}% { fill: ${LEVEL_COLORS[nextLvl]}; transform: scale(1.4); } `;
+          kf += `${settlePct}% { fill: ${LEVEL_COLORS[nextLvl]}; transform: scale(1); } `;
+          
+          curLvl = nextLvl;
+        }
       }
     }
+    
     kf += `100% { fill: ${LEVEL_COLORS[curLvl]}; transform: scale(1); } }`;
     return kf;
   }
@@ -198,8 +216,12 @@ function generateSvg(calendarData) {
       .graph-tile { transform-box: fill-box; transform-origin: center; }
       ${makePopKF('popLevel0', 0)}
       ${makePopKF('popLevel1', 1)}
+      ${makePopKF('popLevel2', 2)}
+      ${makePopKF('popLevel3', 3)}
       .initial-lvl-0 { animation: popLevel0 ${animDuration}s infinite; }
       .initial-lvl-1 { animation: popLevel1 ${animDuration}s infinite; }
+      .initial-lvl-2 { animation: popLevel2 ${animDuration}s infinite; }
+      .initial-lvl-3 { animation: popLevel3 ${animDuration}s infinite; }
 
       ${babaKF}
       ${makeBlockKF('moveB0', b0Steps)}
@@ -231,8 +253,9 @@ function generateSvg(calendarData) {
   calendarData.weeks.forEach((week, weekIndex) => {
     week.contributionDays.forEach((day, dayIndex) => {
       const x = weekIndex * tileSpace; const y = dayIndex * tileSpace;
-      let levelClass = day.contributionCount === 0 ? 'initial-lvl-0 graph-tile' : 'initial-lvl-1 graph-tile';
-      let initialFill = day.contributionCount === 0 ? LEVEL_COLORS[0] : LEVEL_COLORS[1];
+      const level = LEVEL_MAP[day.contributionLevel] ?? 0;
+      const levelClass = `initial-lvl-${level} graph-tile`;
+      const initialFill = LEVEL_COLORS[level];
       graphSvg += `<rect x="${x}" y="${y}" width="${tileSize}" height="${tileSize}" rx="2" ry="2" fill="${initialFill}" class="${levelClass}" />`;
     });
   });

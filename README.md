@@ -27,8 +27,8 @@ creating a feature that applies SVG animations to a profile using Babaisyou char
 ### 2.Click on the Settings -> Secrets and variables -> Actions.
 ### 3.Click the  New repository secret button.
 ### 4.Enter the exact following details:
-### 5.Name: GH_TOKEN 
-### 6.Secret: Paste the token you copied in Step 2
+#### Name: GH_TOKEN 
+#### Secret: Paste the token you copied in Step 2
 
 ## Step 4 : Run the GitHub Action
 ### 1.In your forked repository, go to the Actions tabs.

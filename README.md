@@ -1,7 +1,10 @@
 
 ## BabaIsCommit
 creating a feature that applies SVG animations to a profile using Babaisyou characters and GitHub Actions.
-  
+<div align="center">
+  <img src="https://raw.githubusercontent.com/gomgoms7/BabaIsCommit/baba-output/baba-is-commit.svg" width="100%" alt="Baba Is Commit" />
+</div>
+
   
   
 # [How to apply Baba Is Commit]
